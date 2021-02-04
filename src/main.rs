@@ -2,16 +2,16 @@ use reqwest::*;
 use std::collections::HashMap;
 
 fn main(){
-    // mini_get();
+    mini_get();
     // mini_post();
-    mini_json_get();
     // mini_json_post();
+    // mini_json_get();
     println!("Finish running");
 }
 
 #[tokio::main]
 async fn mini_get() -> Result<()>{
-    let _response = reqwest::get("http://127.0.0.1:8000")
+    let _response = reqwest::get("http://localhost:8000")
     // let response = reqwest::get("https://docs.rs/reqwest/0.9.18/reqwest/index.html")
         .await?
         .text()
@@ -21,18 +21,20 @@ async fn mini_get() -> Result<()>{
 
 #[tokio::main]
 async fn mini_json_get() -> Result<()>{
-    let response = reqwest::get("http://127.0.0.1:8000")
+    let response = reqwest::get("https://reqbin.com/echo/get/json")
         .await?
-        .json()
+        .text()
         .await?;
-    println!("body = {:?}", response);    
+    let config: serde_json::Value = serde_json::from_str(&response)
+        .expect("JSON was not well-formatted");
+    println!("body = {:?}", &config);    
     Ok(())
 }
 
 #[tokio::main]
 async fn mini_post() -> Result<()>{
     let client = reqwest::Client::new();
-    let _res = client.post("http://127.0.0.1:8000")
+    let _res = client.post("http://localhost:8000")
         .body("Hello rust")
         .send()
         .await?;
@@ -47,7 +49,7 @@ async fn mini_json_post() -> Result<()>{
     map.insert("body", "json");
 
     let client = reqwest::Client::new();
-    let _res = client.post("http://127.0.0.1:8000")
+    let _res = client.post("http://localhost:8000")
         .json(&map)
         .send()
         .await?;
