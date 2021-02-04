@@ -11,11 +11,12 @@ fn main(){
 
 #[tokio::main]
 async fn mini_get() -> Result<()>{
-    let _response = reqwest::get("http://localhost:8000")
+    let response = reqwest::get("http://localhost:8000")
     // let response = reqwest::get("https://docs.rs/reqwest/0.9.18/reqwest/index.html")
         .await?
         .text()
         .await?; 
+    println!("{:?}",response);
     Ok(())
 }
 
