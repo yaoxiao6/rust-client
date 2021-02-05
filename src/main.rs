@@ -1,9 +1,11 @@
 use reqwest::*;
 use std::collections::HashMap;
 
+const IP_PORT: &str = "http://localhost:8000";
+
 fn main(){
-    mini_get();
-    // mini_post();
+    // mini_get();
+    mini_post();
     // mini_json_post();
     // mini_json_get();
     println!("Finish running");
@@ -11,7 +13,7 @@ fn main(){
 
 #[tokio::main]
 async fn mini_get() -> Result<()>{
-    let response = reqwest::get("http://localhost:8000")
+    let response = reqwest::get(IP_PORT)
     // let response = reqwest::get("https://docs.rs/reqwest/0.9.18/reqwest/index.html")
         .await?
         .text()
@@ -35,7 +37,7 @@ async fn mini_json_get() -> Result<()>{
 #[tokio::main]
 async fn mini_post() -> Result<()>{
     let client = reqwest::Client::new();
-    let _res = client.post("http://localhost:8000")
+    let _res = client.post(IP_PORT)
         .body("Hello rust")
         .send()
         .await?;
@@ -50,7 +52,7 @@ async fn mini_json_post() -> Result<()>{
     map.insert("body", "json");
 
     let client = reqwest::Client::new();
-    let _res = client.post("http://localhost:8000")
+    let _res = client.post(IP_PORT)
         .json(&map)
         .send()
         .await?;
